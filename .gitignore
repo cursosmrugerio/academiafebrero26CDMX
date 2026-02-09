@@ -1,0 +1,28 @@
+# Archivos compilados de Java
+*.class
+*.jar
+*.war
+*.ear
+
+# Directorios de salida (binarios compilados por Eclipse)
+**/bin/
+
+# Eclipse workspace
+.metadata/
+.recommenders/
+
+# Archivos de configuracion de Eclipse por proyecto
+# (se generan automaticamente al importar)
+**/.settings/
+**/.classpath
+**/.project
+
+# IntelliJ IDEA
+.idea/
+*.iml
+
+# macOS
+.DS_Store
+
+# Logs
+*.log
