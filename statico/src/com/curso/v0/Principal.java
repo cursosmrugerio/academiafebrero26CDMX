@@ -12,9 +12,9 @@ public class Principal {
 
 		// Se accede al campo static usando el nombre de la CLASE (Pato.contador), no un objeto
 		// Las 3 lineas imprimen 3 porque 'contador' es compartido por todas las instancias
-		System.out.println(Pato.contador); //3
-		System.out.println(Pato.contador); //3
-		System.out.println(Pato.contador); //3
+		System.out.println(pato3.contador); //3
+		System.out.println(pato2.contador); //3
+		System.out.println(pato1.contador); //3
 
 	}
 
