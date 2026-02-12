@@ -1,0 +1,23 @@
+package com.curso.v1;
+
+import java.util.Arrays;
+
+public class Principal5 {
+
+	public static void main(String[] args) {
+
+		int[][] orig = { { 1, 2, 3} , { 4, 5, 6, 7}};
+		int[][] dup = orig.clone();
+		int[] copy = dup[0].clone();
+
+		System.out.println(orig == dup); //false
+		System.out.println(orig.equals(dup)); //false
+		//System.out.println(Arrays.equals(orig,dup)); //true
+		System.out.println(orig[0] == dup[0]); //true
+		System.out.println(dup[0] == copy); //false
+		System.out.println(dup[0].equals(copy)); //false
+		
+		System.out.println(Arrays.equals(dup[0],copy)); //true
+	}
+
+}
