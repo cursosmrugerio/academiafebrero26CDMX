@@ -56,6 +56,18 @@ Password: root123
 
 ---
 
+## Problema comun: "Public Key Retrieval is not allowed"
+
+Este error aparece al conectar a MySQL 8 porque usa un metodo de autenticacion (caching_sha2_password) que necesita un permiso adicional.
+
+**Solucion:**
+
+1. En la pantalla de configuracion de la conexion, ve a la pestaña **Driver properties**
+2. Busca la propiedad **allowPublicKeyRetrieval** y cambiala a **TRUE**
+3. Clic en **Test Connection** de nuevo
+
+---
+
 ## Uso basico
 
 - **Ver tablas/colecciones**: Expande la conexion en el panel izquierdo > esquema/base de datos > tablas
