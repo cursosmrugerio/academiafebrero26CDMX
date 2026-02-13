@@ -1,6 +1,8 @@
 # Instalacion de DBeaver Community
 
-DBeaver es un cliente gratuito de bases de datos. Con una sola herramienta puedes conectarte a MySQL, MongoDB, PostgreSQL y muchas mas.
+DBeaver es un cliente gratuito de bases de datos. Soporta MySQL, PostgreSQL y muchas mas.
+
+**Nota:** DBeaver Community NO soporta MongoDB. Para MongoDB usa **MongoDB Compass** (ver seccion al final).
 
 ---
 
@@ -34,25 +36,19 @@ Password: root123
 
 ---
 
-## Conectar a MongoDB (Docker)
+## Conectar a MongoDB - usar MongoDB Compass
 
-Prerequisito: el contenedor `mongo-academia` debe estar corriendo (`docker ps`).
+DBeaver Community no incluye driver de MongoDB (requiere version PRO de pago). Usa **MongoDB Compass** en su lugar.
 
-1. Clic en **Nueva Conexion**
-2. Selecciona **MongoDB**
-3. Llena los datos:
+1. Descarga en [https://www.mongodb.com/products/tools/compass](https://www.mongodb.com/products/tools/compass)
+2. Instala el `.exe`
+3. En la pantalla de conexion pega el connection string:
 
 ```
-Host:     localhost
-Puerto:   27017
-Usuario:  root
-Password: root123
+mongodb://root:root123@localhost:27017
 ```
 
-4. En la pestaña **Authentication**, selecciona **SCRAM-SHA-256**
-5. Clic en **Test Connection**
-6. Si pide descargar el driver, acepta
-7. Clic en **Finalizar**
+4. Clic en **Connect**
 
 ---
 
