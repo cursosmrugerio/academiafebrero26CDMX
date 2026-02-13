@@ -1,0 +1,17 @@
+Basado únicamente en la información proporcionada en las fuentes, aquí te explico qué es `StringBuffer`:
+
+**Definición y Propósito**
+*   **Clase Legada:** `StringBuffer` es una clase "legacy" (heredada o antigua) que implementa secuencias de caracteres mutables.
+*   **Funcionalidad:** Funciona de la misma manera que la clase `StringBuilder` y soporta las mismas operaciones, como por ejemplo el método `append()`. A diferencia de `String`, que es inmutable, `StringBuffer` permite modificar la secuencia de caracteres.
+
+**Diferencia Clave: Seguridad de Hilos (Thread-Safety)**
+La principal diferencia con respecto a `StringBuilder` radica en el manejo de la concurrencia:
+*   **Thread-Safe:** `StringBuffer` es segura para el uso de hilos (thread-safe). Sus operaciones están **sincronizadas**, lo que garantiza que, si múltiples hilos acceden a ella concurrentemente, el estado del buffer no se corrompa.
+*   **Rendimiento:** Debido a esta sincronización, `StringBuffer` conlleva una penalización en el rendimiento y es **más lenta** que `StringBuilder`.
+
+**Uso Recomendado**
+*   Se prefiere el uso de `StringBuilder` cuando se requiere una modificación intensiva de secuencias de caracteres y la sincronización no es importante, ya que ofrece mejor rendimiento.
+*   Algunas fuentes indican que `StringBuffer` no suele ser un tema evaluado en los exámenes modernos (como el OCP 17), recomendando el uso de `StringBuilder` en su lugar.
+
+**Ejemplo de Error Común**
+En las fuentes se menciona `StringBuffer` en el contexto de una `ClassCastException`. Si intentas castear un objeto que es una instancia de `String` a `StringBuffer`, obtendrás una excepción en tiempo de ejecución, ya que aunque ambos manejan texto, no tienen una relación de herencia directa que permita este cast.
