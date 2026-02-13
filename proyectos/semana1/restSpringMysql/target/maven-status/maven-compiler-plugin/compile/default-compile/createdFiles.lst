@@ -1,0 +1,5 @@
+com/academia/rest/entity/Alumno.class
+com/academia/rest/RestSpringMysqlApplication.class
+com/academia/rest/service/AlumnoService.class
+com/academia/rest/repository/AlumnoRepository.class
+com/academia/rest/controller/AlumnoController.class
