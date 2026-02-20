@@ -24,7 +24,8 @@ public class Principal {
 		hilo2.start();
 
 		// Forma ultra compacta para tareas simples
-		new Thread(() -> System.out.println("Hilo de una sola linea!")).start();
+		new Thread(() -> System.out.println("***Hilo de una sola linea!"))
+					.start();
 
 		System.out.println("Main continua...");
 	}
