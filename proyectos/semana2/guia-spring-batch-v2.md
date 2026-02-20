@@ -59,15 +59,9 @@ Si no esta corriendo:
 docker start mysql-academia
 ```
 
-> **Importante:** Si ya ejecutaste la v1 y la tabla tiene datos, limpia todo antes de empezar. Ejecuta en DBeaver conectado como **alumno**:
+> **Importante:** Si ya ejecutaste la v1 y la tabla tiene datos, limpia los datos antes de empezar. Ejecuta en DBeaver conectado como **alumno**:
 > ```sql
 > DELETE FROM empleados_procesados;
-> DELETE FROM BATCH_STEP_EXECUTION_CONTEXT;
-> DELETE FROM BATCH_STEP_EXECUTION;
-> DELETE FROM BATCH_JOB_EXECUTION_CONTEXT;
-> DELETE FROM BATCH_JOB_EXECUTION_PARAMS;
-> DELETE FROM BATCH_JOB_EXECUTION;
-> DELETE FROM BATCH_JOB_INSTANCE;
 > ```
 
 Si no tienes la tabla `empleados_procesados`, creala:
@@ -464,6 +458,7 @@ import com.academia.batch.processor.ReporteProcessor;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.job.builder.JobBuilder;
+import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.database.JdbcBatchItemWriter;
@@ -592,6 +587,7 @@ public class BatchConfig {
     @Bean
     public Job procesarEmpleadosJob(JobRepository jobRepository, Step paso1, Step paso2) {
         return new JobBuilder("procesarEmpleadosJob", jobRepository)
+                .incrementer(new RunIdIncrementer()) // run.id auto-incremental para permitir re-ejecuciones
                 .start(paso1)
                 .next(paso2)    // despues de paso1, ejecuta paso2
                 .build();
@@ -686,7 +682,7 @@ Para cada `EmpleadoReporte`, llama a `getNombre()`, `getDepartamento()`, `getSal
 
 ### El Job ahora tiene dos Steps
 
-El unico cambio en la definicion del Job es agregar `.next(paso2)`:
+Los cambios en la definicion del Job son agregar `.next(paso2)` y el `.incrementer(new RunIdIncrementer())`:
 
 ```java
 // v1: un solo step
@@ -694,12 +690,15 @@ El unico cambio en la definicion del Job es agregar `.next(paso2)`:
 .build();
 
 // v2: dos steps en secuencia
+.incrementer(new RunIdIncrementer()) // permite re-ejecutar sin limpiar tablas BATCH_*
 .start(paso1)
 .next(paso2)    // se ejecuta despues de que paso1 termina exitosamente
 .build();
 ```
 
 Si `paso1` falla, `paso2` **no se ejecuta**. Spring Batch garantiza el orden y no avanza al siguiente Step si el anterior fallo.
+
+**`RunIdIncrementer`** — cada vez que ejecutas la app, Spring Batch agrega automaticamente un parametro `run.id` con un valor incremental (1, 2, 3...). Esto hace que cada ejecucion sea unica y evita el error "A job instance already exists". Sin esto, tendrias que limpiar las tablas `BATCH_*` manualmente antes de cada re-ejecucion.
 
 ---
 
@@ -866,19 +865,25 @@ Ambos Steps leyeron 10 registros, escribieron 10 registros, hicieron 4 commits (
 
 ## Para re-ejecutar
 
-Limpia datos y metadata antes de volver a ejecutar:
+Gracias al `RunIdIncrementer`, puedes ejecutar la app multiples veces sin limpiar las tablas `BATCH_*`. Cada ejecucion recibe un `run.id` unico (1, 2, 3...).
+
+Solo necesitas limpiar la tabla de datos si quieres evitar duplicados:
 
 ```sql
 DELETE FROM empleados_procesados;
-DELETE FROM BATCH_STEP_EXECUTION_CONTEXT;
-DELETE FROM BATCH_STEP_EXECUTION;
-DELETE FROM BATCH_JOB_EXECUTION_CONTEXT;
-DELETE FROM BATCH_JOB_EXECUTION_PARAMS;
-DELETE FROM BATCH_JOB_EXECUTION;
-DELETE FROM BATCH_JOB_INSTANCE;
 ```
 
 El archivo `reporte-empleados.csv` se sobreescribe automaticamente al volver a ejecutar, no necesitas borrarlo manualmente.
+
+> **Nota:** Si por alguna razon necesitas limpiar completamente el historial de Spring Batch:
+> ```sql
+> DELETE FROM BATCH_STEP_EXECUTION_CONTEXT;
+> DELETE FROM BATCH_STEP_EXECUTION;
+> DELETE FROM BATCH_JOB_EXECUTION_CONTEXT;
+> DELETE FROM BATCH_JOB_EXECUTION_PARAMS;
+> DELETE FROM BATCH_JOB_EXECUTION;
+> DELETE FROM BATCH_JOB_INSTANCE;
+> ```
 
 ---
 
@@ -1004,17 +1009,13 @@ MARIA LOPEZ,TI,35000.0,3500.0,38500.0
 ...
 ```
 
-### 6. Limpiar para re-ejecutar
+### 6. Limpiar datos para re-ejecutar
+
+Gracias al `RunIdIncrementer`, no necesitas limpiar las tablas `BATCH_*`. Solo limpia la tabla de datos si quieres evitar duplicados:
 
 ```bash
 docker exec -it mysql-academia mysql -u alumno -palumno123 academia -e "
 DELETE FROM empleados_procesados;
-DELETE FROM BATCH_STEP_EXECUTION_CONTEXT;
-DELETE FROM BATCH_STEP_EXECUTION;
-DELETE FROM BATCH_JOB_EXECUTION_CONTEXT;
-DELETE FROM BATCH_JOB_EXECUTION_PARAMS;
-DELETE FROM BATCH_JOB_EXECUTION;
-DELETE FROM BATCH_JOB_INSTANCE;
 "
 ```
 
@@ -1035,7 +1036,7 @@ FLUSH PRIVILEGES;
 No creaste la tabla. Ejecuta el script de la seccion de Prerequisitos.
 
 ### "A job instance already exists"
-Ya ejecutaste el Job antes. Sigue las instrucciones de la seccion "Para re-ejecutar".
+Esto no deberia pasar con el `RunIdIncrementer` configurado. Si te pasa, verifica que tu `BatchConfig.java` tenga la linea `.incrementer(new RunIdIncrementer())` en la definicion del Job. Si no la tiene, sigue las instrucciones de la seccion "Para re-ejecutar" para limpiar manualmente.
 
 ### No veo el archivo reporte-empleados.csv en Eclipse
 Clic derecho en el proyecto > **Refresh** (o `F5`). Eclipse no detecta automaticamente archivos creados por la app.

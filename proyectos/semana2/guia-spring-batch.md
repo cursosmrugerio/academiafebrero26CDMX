@@ -443,6 +443,7 @@ import com.academia.batch.processor.EmpleadoProcessor;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.job.builder.JobBuilder;
+import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.database.JdbcBatchItemWriter;
@@ -514,6 +515,7 @@ public class BatchConfig {
     @Bean
     public Job procesarEmpleadosJob(JobRepository jobRepository, Step paso1) {
         return new JobBuilder("procesarEmpleadosJob", jobRepository)
+                .incrementer(new RunIdIncrementer())
                 .start(paso1)
                 .build();
     }
@@ -746,34 +748,37 @@ FROM BATCH_STEP_EXECUTION;
 
 ---
 
-## Paso 12: Que pasa si ejecuto la app por segunda vez?
+## Paso 12: Re-ejecuciones del Job
 
-**Esto es importante.** Si ejecutas la aplicacion por segunda vez sin cambiar nada, vas a ver este error:
+### RunIdIncrementer: re-ejecucion automatica
+
+Gracias al `.incrementer(new RunIdIncrementer())` en la definicion del Job, puedes ejecutar la app multiples veces sin problemas. Cada ejecucion recibe un parametro `run.id` unico (1, 2, 3...), lo que hace que Spring Batch la trate como una ejecucion nueva.
+
+Sin `RunIdIncrementer`, Spring Batch lanzaria este error en la segunda ejecucion:
 
 ```
 A job instance already exists and is complete for parameters={}
 ```
 
-**Por que?** Spring Batch registra cada ejecucion en el `JobRepository`. Si un Job ya se ejecuto exitosamente con los mismos parametros (en nuestro caso, sin parametros `{}`), no lo vuelve a ejecutar. Esto es una **proteccion**: en produccion no quieres procesar el mismo archivo dos veces por accidente.
+**Por que?** Spring Batch registra cada ejecucion en el `JobRepository`. Si un Job ya se ejecuto exitosamente con los mismos parametros, no lo vuelve a ejecutar. Esto es una **proteccion**: en produccion no quieres procesar el mismo archivo dos veces por accidente. El `RunIdIncrementer` resuelve esto automaticamente agregando un parametro diferente en cada ejecucion.
 
-### Como re-ejecutar el Job
+### Limpiar datos entre ejecuciones
 
-Para volver a ejecutar, necesitas limpiar los datos anteriores. Ejecuta estos scripts en DBeaver:
+Si ejecutas multiples veces, la tabla `empleados_procesados` tendra duplicados. Para limpiarla:
 
 ```sql
--- 1. Limpiar nuestros datos
 DELETE FROM empleados_procesados;
-
--- 2. Limpiar el historial de Spring Batch (respetar el orden por las foreign keys)
-DELETE FROM BATCH_STEP_EXECUTION_CONTEXT;
-DELETE FROM BATCH_STEP_EXECUTION;
-DELETE FROM BATCH_JOB_EXECUTION_CONTEXT;
-DELETE FROM BATCH_JOB_EXECUTION_PARAMS;
-DELETE FROM BATCH_JOB_EXECUTION;
-DELETE FROM BATCH_JOB_INSTANCE;
 ```
 
-Ahora puedes ejecutar la app de nuevo y procesara los 10 registros otra vez.
+> **Nota:** Si por alguna razon necesitas limpiar completamente el historial de Spring Batch:
+> ```sql
+> DELETE FROM BATCH_STEP_EXECUTION_CONTEXT;
+> DELETE FROM BATCH_STEP_EXECUTION;
+> DELETE FROM BATCH_JOB_EXECUTION_CONTEXT;
+> DELETE FROM BATCH_JOB_EXECUTION_PARAMS;
+> DELETE FROM BATCH_JOB_EXECUTION;
+> DELETE FROM BATCH_JOB_INSTANCE;
+> ```
 
 ---
 
@@ -919,17 +924,13 @@ FROM BATCH_STEP_EXECUTION;
 exit;
 ```
 
-### 6. Limpiar para re-ejecutar
+### 6. Limpiar datos para re-ejecutar
+
+Gracias al `RunIdIncrementer`, no necesitas limpiar las tablas `BATCH_*`. Solo limpia la tabla de datos si quieres evitar duplicados:
 
 ```bash
 docker exec -it mysql-academia mysql -u alumno -palumno123 academia -e "
 DELETE FROM empleados_procesados;
-DELETE FROM BATCH_STEP_EXECUTION_CONTEXT;
-DELETE FROM BATCH_STEP_EXECUTION;
-DELETE FROM BATCH_JOB_EXECUTION_CONTEXT;
-DELETE FROM BATCH_JOB_EXECUTION_PARAMS;
-DELETE FROM BATCH_JOB_EXECUTION;
-DELETE FROM BATCH_JOB_INSTANCE;
 "
 ```
 
@@ -956,7 +957,7 @@ docker start mysql-academia
 ```
 
 ### "A job instance already exists"
-Ya ejecutaste el Job antes. Sigue las instrucciones del Paso 12 para limpiar y re-ejecutar.
+Esto no deberia pasar con el `RunIdIncrementer` configurado. Si te pasa, verifica que tu `BatchConfig.java` tenga la linea `.incrementer(new RunIdIncrementer())` en la definicion del Job. Si no la tiene, sigue las instrucciones del Paso 12 para limpiar manualmente.
 
 ### La app arranca pero no procesa nada
 Verifica que `spring.batch.job.enabled=true` este en tu `application.properties`. Sin esta propiedad, el Job no se ejecuta automaticamente.
