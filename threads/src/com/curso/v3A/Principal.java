@@ -1,8 +1,5 @@
-package com.curso.v3;
+package com.curso.v3A;
 
-// v3: sleep() - simular tareas que toman tiempo
-// sleep() pausa el hilo actual por N milisegundos
-// Esto permite que otros hilos se ejecuten mientras uno espera
 public class Principal {
 
 	public static void main(String[] args) {
@@ -22,12 +19,6 @@ public class Principal {
 		System.out.println("Iniciando descarga de " + nombre + "...");
 
 		for (int i = 1; i <= segundos; i++) {
-			try {
-				Thread.sleep(2000); // pausa 3 segundo
-			} catch (InterruptedException e) {
-				System.out.println("Descarga de " + nombre + " fue interrumpida!");
-				return;
-			}
 			System.out.println(nombre + " -> " + i + "/" + segundos + " segundos");
 		}
 

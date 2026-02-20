@@ -1,4 +1,4 @@
-package com.curso.v3;
+package com.curso.v3B;
 
 // v3: sleep() - simular tareas que toman tiempo
 // sleep() pausa el hilo actual por N milisegundos
@@ -23,7 +23,8 @@ public class Principal {
 
 		for (int i = 1; i <= segundos; i++) {
 			try {
-				Thread.sleep(2000); // pausa 3 segundo
+				if (nombre.equals("video.mp4"))
+					Thread.sleep(3000); // pausa 3 segundo
 			} catch (InterruptedException e) {
 				System.out.println("Descarga de " + nombre + " fue interrumpida!");
 				return;
