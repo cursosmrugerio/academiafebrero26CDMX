@@ -7,6 +7,9 @@
 # Directorios de salida (binarios compilados por Eclipse)
 **/bin/
 
+# Directorios de salida de Maven
+**/target/
+
 # Eclipse workspace
 .metadata/
 .recommenders/
