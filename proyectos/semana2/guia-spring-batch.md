@@ -812,6 +812,131 @@ application.properties
 
 ---
 
+## Ejecucion completa desde linea de comando
+
+Si prefieres trabajar sin Eclipse, puedes ejecutar todo el proyecto desde la terminal.
+
+### 1. Verificar prerequisitos
+
+```bash
+# Java 17 o superior
+java -version
+
+# Maven
+mvn -version
+
+# Docker corriendo
+docker ps
+```
+
+Si el contenedor MySQL no esta corriendo:
+
+```bash
+docker start mysql-academia
+```
+
+### 2. Preparar la base de datos desde terminal
+
+Conectate a MySQL dentro del contenedor:
+
+```bash
+docker exec -it mysql-academia mysql -u root -proot123
+```
+
+Dentro de la consola de MySQL, ejecuta:
+
+```sql
+-- Dar permisos al usuario alumno (si no lo has hecho)
+GRANT ALL PRIVILEGES ON academia.* TO 'alumno'@'%';
+FLUSH PRIVILEGES;
+
+-- Crear la tabla destino
+USE academia;
+
+CREATE TABLE IF NOT EXISTS empleados_procesados (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nombre VARCHAR(100) NOT NULL,
+    departamento VARCHAR(50) NOT NULL,
+    salario DECIMAL(10,2) NOT NULL,
+    bono DECIMAL(10,2) NOT NULL
+);
+
+exit;
+```
+
+### 3. Compilar el proyecto
+
+Desde la carpeta raiz del proyecto (`springBatch/`):
+
+```bash
+# Compilar y empaquetar (genera el JAR en target/)
+mvn clean package -DskipTests
+```
+
+Resultado esperado:
+
+```
+[INFO] BUILD SUCCESS
+[INFO] -----------------------------------------------
+```
+
+Esto genera el archivo `target/spring-batch-1.0.0.jar`.
+
+### 4. Ejecutar la aplicacion
+
+**Opcion A** — con Maven (no necesita compilar antes):
+
+```bash
+mvn spring-boot:run
+```
+
+**Opcion B** — ejecutando el JAR directamente (necesita haber compilado con `mvn clean package`):
+
+```bash
+java -jar target/spring-batch-1.0.0.jar
+```
+
+Ambas opciones producen el mismo resultado. La opcion B es como se ejecutaria en un servidor de produccion.
+
+### 5. Verificar resultados desde terminal
+
+Conectate a MySQL como alumno:
+
+```bash
+docker exec -it mysql-academia mysql -u alumno -palumno123 academia
+```
+
+Dentro de la consola de MySQL:
+
+```sql
+-- Ver los empleados procesados
+SELECT * FROM empleados_procesados;
+
+-- Ver estadisticas del Step
+SELECT STEP_NAME, READ_COUNT, WRITE_COUNT, COMMIT_COUNT, STATUS
+FROM BATCH_STEP_EXECUTION;
+
+exit;
+```
+
+### 6. Limpiar para re-ejecutar
+
+```bash
+docker exec -it mysql-academia mysql -u alumno -palumno123 academia -e "
+DELETE FROM empleados_procesados;
+DELETE FROM BATCH_STEP_EXECUTION_CONTEXT;
+DELETE FROM BATCH_STEP_EXECUTION;
+DELETE FROM BATCH_JOB_EXECUTION_CONTEXT;
+DELETE FROM BATCH_JOB_EXECUTION_PARAMS;
+DELETE FROM BATCH_JOB_EXECUTION;
+DELETE FROM BATCH_JOB_INSTANCE;
+"
+```
+
+Despues de limpiar, puedes volver a ejecutar con `mvn spring-boot:run` o `java -jar target/spring-batch-1.0.0.jar`.
+
+---
+
 ## Problemas comunes
 
 ### "Access denied for user 'alumno'"
