@@ -14,7 +14,7 @@ HTML_CONTENT = """<!DOCTYPE html>
     size: letter;
     margin: 2.5cm 2.5cm 3cm 2.5cm;
     @bottom-center {
-      content: "Pagina " counter(page) "/20";
+      content: "Pagina " counter(page) "/21";
       font-size: 10px;
       color: #999;
     }
@@ -259,6 +259,7 @@ HTML_CONTENT = """<!DOCTYPE html>
       <li>Proyecto v1: CSV a MySQL (un Step)</li>
       <li>Proyecto v2: Dos Steps (CSV a MySQL a CSV)</li>
       <li>JobRepository: metadatos y control de ejecucion</li>
+      <li>RunIdIncrementer: re-ejecuciones automaticas</li>
     </ol>
   </div>
 
@@ -593,6 +594,7 @@ public Step paso1(JobRepository jobRepository,
 <pre><code>@Bean
 public Job procesarEmpleadosJob(JobRepository jobRepository, Step paso1) {
     return new JobBuilder("procesarEmpleadosJob", jobRepository)
+            .incrementer(new RunIdIncrementer()) // permite re-ejecutar
             .start(paso1)   // inicia con el paso1
             .build();
 }</code></pre>
@@ -683,9 +685,38 @@ FROM BATCH_STEP_EXECUTION;</code></pre>
 </table>
 
 <div class="callout callout-problema">
-  <strong>Problema:</strong> Si ejecutas el Job dos veces con los mismos parametros, Spring Batch dice:
-  "ya lo ejecute, no lo vuelvo a hacer". Si necesitas re-ejecutar, primero limpia las tablas BATCH_*
-  y la tabla de datos.
+  <strong>Problema sin RunIdIncrementer:</strong> Si ejecutas el Job dos veces con los mismos parametros,
+  Spring Batch dice: "ya lo ejecute, no lo vuelvo a hacer". La solucion es usar
+  <code>RunIdIncrementer</code> (ver seccion siguiente).
+</div>
+
+<!-- ==================== 10b. RUN ID INCREMENTER ==================== -->
+<div class="page-break"></div>
+<h1 class="section">10b. RunIdIncrementer: re-ejecuciones automaticas</h1>
+
+<p>Sin configuracion adicional, Spring Batch <strong>no permite</strong> ejecutar el mismo Job dos veces
+con los mismos parametros. Esto es una proteccion para no reprocesar datos por accidente.</p>
+
+<h2>El problema</h2>
+
+<pre><code>Primera ejecucion:  parametros = {}  →  COMPLETED  ✓
+Segunda ejecucion:  parametros = {}  →  "A job instance already exists"  ✗</code></pre>
+
+<h2>La solucion: RunIdIncrementer</h2>
+
+<pre><code>.incrementer(new RunIdIncrementer())</code></pre>
+
+<p><code>RunIdIncrementer</code> agrega automaticamente un parametro <code>run.id</code> con un valor
+incremental (1, 2, 3...) en cada ejecucion. Asi cada ejecucion es unica:</p>
+
+<pre><code>Ejecucion 1:  parametros = {run.id=1}  →  COMPLETED  ✓
+Ejecucion 2:  parametros = {run.id=2}  →  COMPLETED  ✓
+Ejecucion 3:  parametros = {run.id=3}  →  COMPLETED  ✓</code></pre>
+
+<div class="callout callout-clave">
+  <strong>Clave:</strong> Con <code>RunIdIncrementer</code> puedes ejecutar la app multiples veces sin necesidad
+  de limpiar las tablas <code>BATCH_*</code>. Solo necesitas limpiar la tabla <code>empleados_procesados</code>
+  si quieres evitar datos duplicados.
 </div>
 
 <!-- ==================== 11. PROYECTO V2 ==================== -->
@@ -706,6 +737,7 @@ con el salario total:</p>
 public Job procesarEmpleadosJob(JobRepository jobRepository,
                                 Step paso1, Step paso2) {
     return new JobBuilder("procesarEmpleadosJob", jobRepository)
+            .incrementer(new RunIdIncrementer()) // permite re-ejecutar
             .start(paso1)       // primero ejecuta paso1
             .next(paso2)        // despues ejecuta paso2
             .build();
@@ -922,6 +954,7 @@ public class BatchConfig {
     public Job procesarEmpleadosJob(JobRepository repo,
                                     Step paso1, Step paso2) {
         return new JobBuilder("procesarEmpleadosJob", repo)
+                .incrementer(new RunIdIncrementer())
                 .start(paso1)
                 .next(paso2)
                 .build();
@@ -1063,6 +1096,7 @@ spring.batch.job.enabled=true</code></pre>
   <tr><td><code>beanMapped()</code></td><td>Mapea <code>:parametros</code> SQL a los getters del POJO</td></tr>
   <tr><td><code>rowMapper</code></td><td>Funcion que convierte cada fila SQL en un objeto Java</td></tr>
   <tr><td><code>.start().next()</code></td><td>Define el orden de ejecucion de los Steps</td></tr>
+  <tr><td><code>RunIdIncrementer</code></td><td>Agrega <code>run.id</code> auto-incremental para permitir re-ejecuciones</td></tr>
 </table>
 
 <!-- ==================== 20. PROGRESION ==================== -->
