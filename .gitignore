@@ -30,5 +30,8 @@
 # Logs
 *.log
 
+# Archivos generados por Spring Batch
+reporte-empleados.csv
+
 # Claude Code
 CLAUDE.md
