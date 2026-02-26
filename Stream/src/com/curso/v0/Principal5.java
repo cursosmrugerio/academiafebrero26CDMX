@@ -11,7 +11,7 @@ public class Principal5 {
 
 	public static void main(String[] args) {
 		
-		System.out.println("Principal3");
+		System.out.println("Principal5");
 
 		List<String> companyNames = Arrays.asList(
 				"paypal", 
