@@ -29,6 +29,7 @@ public class Principal {
 	
 	public static void main(String[] args) {
 		
+		//Effective Final
 		Empleado emp = new Empleado("Filologo");
 		
 		Supplier<String> sup = () -> emp.getName();
