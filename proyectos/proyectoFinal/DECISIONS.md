@@ -39,6 +39,24 @@ Fecha de inicio: 2026-03-04
 - **Decision:** Tests unitarios con Mockito para la capa de servicios.
 - **Razon:** Tecnologias cubiertas en el modulo 5.
 
+### D006 - Infraestructura con Docker Compose
+- **Fecha:** 2026-03-04
+- **Decision:** Usar Docker Compose para levantar MySQL 8.0 y MongoDB 7.0 en contenedores.
+  - Puerto MySQL: 3307 (para no conflictar con instalaciones locales)
+  - Puerto MongoDB: 27017
+  - Volumenes persistentes para que los datos sobrevivan reinicios
+- **Razon:** No contaminar el ambiente local. Un solo comando (`docker-compose up -d`) levanta
+  toda la infraestructura. Ya se tiene Docker funcionando en el equipo.
+
+### D007 - Scripts de inicializacion automatica de BD
+- **Fecha:** 2026-03-04
+- **Decision:** Scripts en `db/mysql/init.sql` y `db/mongodb/init.js` que se ejecutan
+  automaticamente solo la primera vez que se crean los contenedores (via docker-entrypoint-initdb.d).
+  - MySQL: crea tablas `usuarios`, `carrito_items`, `ordenes`, `orden_detalle`
+  - MongoDB: crea usuario de app, collections `categorias` y `productos`, indices y categorias iniciales
+- **Razon:** Automatizar la creacion de estructuras de BD sin pasos manuales.
+  Los datos persisten en volumenes Docker y los scripts no se re-ejecutan en reinicios.
+
 ---
 
 ## Modulos del Ecommerce
@@ -71,6 +89,7 @@ Fecha de inicio: 2026-03-04
 
 ## Registro de Progreso
 
+- [x] Docker Compose + scripts de inicializacion de BD
 - [ ] Estructura inicial del proyecto (Maven, dependencias)
 - [ ] Entidades y repositorios
 - [ ] Servicios
