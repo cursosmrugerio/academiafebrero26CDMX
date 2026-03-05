@@ -41,7 +41,7 @@ Mostrar reporte de JaCoCo con coverage >= 80%.
 ### Tecnologias demostradas
 Spring Boot, Spring Data MongoDB, REST API, Maven, Swagger, JUnit 5, Mockito, MockMvc, JaCoCo
 
-### Estado: PENDIENTE
+### Estado: EN PROGRESO (TECH-4 completada)
 
 ---
 

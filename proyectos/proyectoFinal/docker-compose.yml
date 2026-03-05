@@ -30,6 +30,21 @@ services:
       - ./db/mongodb/init.js:/docker-entrypoint-initdb.d/init.js
     restart: unless-stopped
 
+  app:
+    build: ./techshop
+    container_name: techshop-app
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/techshop
+      SPRING_DATASOURCE_USERNAME: techshop_user
+      SPRING_DATASOURCE_PASSWORD: techshop_pass
+      SPRING_DATA_MONGODB_URI: mongodb://techshop_user:techshop_pass@mongodb:27017/techshop
+    depends_on:
+      - mysql
+      - mongodb
+    restart: unless-stopped
+
 volumes:
   mysql_data:
   mongo_data:

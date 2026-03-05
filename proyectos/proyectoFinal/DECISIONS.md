@@ -116,7 +116,7 @@ Fecha de inicio: 2026-03-04
 ## Registro de Progreso
 
 - [x] Docker Compose + scripts de inicializacion de BD
-- [ ] Estructura inicial del proyecto (Maven, dependencias)
+- [x] Estructura inicial del proyecto (Maven, dependencias)
 - [ ] Entidades y repositorios
 - [ ] Servicios
 - [ ] Controladores REST
