@@ -149,6 +149,51 @@ En TechShop, nuestra Definition of Done es:
 Por que importa el DoD? Porque evita el clasico "ya esta, solo falta testearlo"
 que en realidad significa "no esta terminado". Si no tiene tests, no esta listo.
 
+### Sprint Review (Revision del Sprint)
+
+Ceremonia al final del sprint donde el equipo muestra el incremento al Product Owner
+(o evaluador). No es una presentacion — es una **demostracion en vivo** del software
+funcionando.
+
+En TechShop Sprint 1:
+- Abrir Swagger UI
+- Crear categorias, crear productos, listar por categoria, ver detalle
+- Mostrar reporte de JaCoCo con coverage >= 80%
+- Mostrar que `docker compose up -d` levanta todo
+
+### Sprint Retrospective (Retrospectiva)
+
+Ceremonia interna del equipo (despues del Review) donde se reflexiona sobre el
+**proceso**, no sobre el producto. Se responden 3 preguntas:
+
+1. **Que salio bien?** (seguir haciendolo)
+2. **Que salio mal?** (identificar problemas)
+3. **Que podemos mejorar?** (acciones concretas)
+
+Ejemplo Sprint 1:
+- Bien: testing desde el inicio, Docker facilito la validacion
+- Mal: el filtro por categoria se implemento diferente a la especificacion
+  (path variable vs query param)
+- Mejorar: revisar la descripcion de cada historia en Jira antes de implementar
+
+### Velocity (Velocidad)
+
+Cantidad de trabajo completado en un sprint, medido en **historias terminadas**
+(o story points si se usan). Sirve para predecir cuanto trabajo cabe en sprints futuros.
+
+Sprint 1: 5 historias completadas (TECH-4 a TECH-8).
+
+### Cierre del Sprint
+
+Pasos al terminar un sprint:
+
+1. Todas las historias en "Hecho"
+2. Epic del sprint movido a "Finalizada"
+3. Sprint Review (demo)
+4. Sprint Retrospective
+5. Tag de version en Git (ej: `v1.0.0`)
+6. Cerrar el sprint en Jira (las historias incompletas se mueven al siguiente)
+
 ---
 
 ## Flujo de trabajo que seguimos
@@ -170,4 +215,5 @@ que en realidad significa "no esta terminado". Si no tiene tests, no esta listo.
 | 2026-03-05 | Epic, Historia de Usuario, Sprint, Backlog, Estado, Demo | Antes de iniciar TECH-4 |
 | 2026-03-05 | Definition of Done (DoD) | Decidimos estrategia de testing desde Sprint 1 |
 | 2026-03-05 | Incremento | Decidimos Dockerizar la app para entregas incrementales por sprint |
+| 2026-03-05 | Sprint Review, Retrospectiva, Velocity, Cierre del Sprint | Al completar Sprint 1 |
 
