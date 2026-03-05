@@ -71,6 +71,18 @@ Fecha de inicio: 2026-03-04
 - **Definition of Done:** Cada historia de usuario debe incluir sus tests unitarios correspondientes con coverage >= 80% para considerarse terminada
 - **Razon:** Shift-left testing — detectar bugs cuando son baratos de corregir. El testing no es una fase separada, es parte del desarrollo diario.
 
+### D009 - Liberaciones incrementales con Docker
+- **Fecha:** 2026-03-05
+- **Decision:** Dockerizar la aplicacion Spring Boot para entregar un incremento funcional al final de cada sprint.
+  - **Dockerfile** multi-stage: etapa de build (Maven) + etapa de ejecucion (JRE)
+  - **Servicio `app`** agregado al docker-compose.yml — un solo `docker compose up -d` levanta app + MySQL + MongoDB
+  - **Versionado por sprint:** tag de Maven y tag de Git alineados
+    - Sprint 1: `v1.0.0` (catalogo)
+    - Sprint 2: `v2.0.0` (compra)
+    - Sprint 3: `v3.0.0` (batch + calidad)
+  - **Flujo de entrega:** el evaluador/usuario final solo necesita Docker instalado, clona el repo, ejecuta `docker compose up -d` y abre Swagger para probar
+- **Razon:** En Scrum, cada sprint debe producir un incremento potencialmente entregable. Dockerizar la app permite que cualquier persona pruebe el producto sin instalar Java, Maven ni configurar bases de datos.
+
 ---
 
 ## Modulos del Ecommerce

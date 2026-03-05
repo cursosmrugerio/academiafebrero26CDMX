@@ -111,6 +111,27 @@ No es una presentacion de PowerPoint, es una demostracion en vivo.
 
 Ejemplo Sprint 1: abrir Swagger, crear categorias, crear productos, listar por categoria.
 
+### Incremento
+
+El **Incremento** es el resultado tangible de un sprint: software funcionando que se
+puede entregar al usuario. No es codigo a medias ni "falta solo el deploy" — es algo
+que alguien puede ejecutar y probar.
+
+Cada incremento se construye sobre el anterior:
+
+```
+Sprint 1 → Incremento v1.0.0 (catalogo funcionando)
+Sprint 2 → Incremento v2.0.0 (catalogo + compra funcionando)
+Sprint 3 → Incremento v3.0.0 (todo el ecommerce funcionando)
+```
+
+En TechShop, el incremento se entrega como un Docker Compose completo.
+El evaluador ejecuta `docker compose up -d`, abre Swagger, y prueba todo lo
+que se construyo hasta ese sprint. No necesita instalar Java, Maven ni bases de datos.
+
+Esto se alinea con el principio de Scrum: *"El software funcionando es la medida
+principal de progreso"*.
+
 ### Definition of Done (DoD)
 
 Lista de criterios que una historia de usuario debe cumplir para considerarse **terminada**.
@@ -148,4 +169,5 @@ que en realidad significa "no esta terminado". Si no tiene tests, no esta listo.
 |---|---|---|
 | 2026-03-05 | Epic, Historia de Usuario, Sprint, Backlog, Estado, Demo | Antes de iniciar TECH-4 |
 | 2026-03-05 | Definition of Done (DoD) | Decidimos estrategia de testing desde Sprint 1 |
+| 2026-03-05 | Incremento | Decidimos Dockerizar la app para entregas incrementales por sprint |
 
