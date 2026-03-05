@@ -6,6 +6,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
+/**
+ * Documento MongoDB que representa una categoria de productos.
+ * Cada categoria define una lista de atributos especificos que sus productos
+ * pueden tener (ej: Laptops tiene ram, procesador; Smartphones tiene pantalla, camara).
+ */
 @Document(collection = "categorias")
 public class Categoria {
 
@@ -17,6 +22,7 @@ public class Categoria {
 
     private String descripcion;
 
+    /** Atributos especificos que los productos de esta categoria pueden tener */
     private List<String> atributos;
 
     public Categoria() {

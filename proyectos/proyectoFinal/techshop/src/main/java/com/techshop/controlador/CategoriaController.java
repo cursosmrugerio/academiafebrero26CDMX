@@ -11,6 +11,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * API REST para gestionar categorias de productos (RF011).
+ * Expone operaciones CRUD consumidas por el administrador de la tienda.
+ * La documentacion interactiva de cada endpoint se genera via Swagger (@Operation).
+ */
 @RestController
 @RequestMapping("/api/categorias")
 @Tag(name = "Categorias", description = "Gestion de categorias de productos")
@@ -58,6 +63,7 @@ public class CategoriaController {
         return ResponseEntity.noContent().build();
     }
 
+    /** Captura errores de validacion del servicio y responde con 400 Bad Request */
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<String> manejarError(IllegalArgumentException e) {
         return ResponseEntity.badRequest().body(e.getMessage());
