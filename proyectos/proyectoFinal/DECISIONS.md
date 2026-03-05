@@ -57,6 +57,20 @@ Fecha de inicio: 2026-03-04
 - **Razon:** Automatizar la creacion de estructuras de BD sin pasos manuales.
   Los datos persisten en volumenes Docker y los scripts no se re-ejecutan en reinicios.
 
+### D008 - Estrategia de testing desde Sprint 1
+- **Fecha:** 2026-03-05
+- **Decision:** Adoptar testing continuo desde el Sprint 1, no dejarlo para el final.
+  - **JUnit 5 + Mockito** para tests unitarios de servicios (capa con logica de negocio)
+  - **MockMvc** para tests de integracion de controladores REST
+  - **JaCoCo** como plugin Maven para medir cobertura, con umbral minimo de **80%** (el build falla si no se cumple)
+  - **No se usa Testcontainers** por ahora — los tests de repositorios no son prioridad ya que Spring Data genera la implementacion
+- **Prioridad de testing por capa:**
+  - Servicios: 90%+ (logica de negocio)
+  - Controladores: 70-80% (happy path + errores principales)
+  - Modelos/DTOs: no se persigue coverage (son datos, no logica)
+- **Definition of Done:** Cada historia de usuario debe incluir sus tests unitarios correspondientes con coverage >= 80% para considerarse terminada
+- **Razon:** Shift-left testing — detectar bugs cuando son baratos de corregir. El testing no es una fase separada, es parte del desarrollo diario.
+
 ---
 
 ## Modulos del Ecommerce

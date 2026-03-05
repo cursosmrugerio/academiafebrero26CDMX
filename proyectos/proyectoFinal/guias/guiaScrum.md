@@ -111,6 +111,23 @@ No es una presentacion de PowerPoint, es una demostracion en vivo.
 
 Ejemplo Sprint 1: abrir Swagger, crear categorias, crear productos, listar por categoria.
 
+### Definition of Done (DoD)
+
+Lista de criterios que una historia de usuario debe cumplir para considerarse **terminada**.
+No basta con que "el codigo funcione" — debe cumplir un estandar de calidad.
+
+En TechShop, nuestra Definition of Done es:
+
+1. **Codigo implementado** — la funcionalidad que pide la historia esta completa
+2. **Tests unitarios** — el servicio tiene tests con Mockito
+3. **Tests de integracion** — el controlador tiene tests con MockMvc
+4. **Coverage >= 80%** — medido con JaCoCo; si baja de 80%, el build falla
+5. **Sin errores de compilacion** — `mvn clean verify` pasa correctamente
+6. **Historia movida a "Listo"** en Jira
+
+Por que importa el DoD? Porque evita el clasico "ya esta, solo falta testearlo"
+que en realidad significa "no esta terminado". Si no tiene tests, no esta listo.
+
 ---
 
 ## Flujo de trabajo que seguimos
@@ -130,4 +147,5 @@ Ejemplo Sprint 1: abrir Swagger, crear categorias, crear productos, listar por c
 | Fecha | Concepto | Contexto |
 |---|---|---|
 | 2026-03-05 | Epic, Historia de Usuario, Sprint, Backlog, Estado, Demo | Antes de iniciar TECH-4 |
+| 2026-03-05 | Definition of Done (DoD) | Decidimos estrategia de testing desde Sprint 1 |
 
