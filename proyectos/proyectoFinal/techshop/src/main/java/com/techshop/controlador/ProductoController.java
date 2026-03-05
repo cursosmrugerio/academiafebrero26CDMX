@@ -3,6 +3,7 @@ package com.techshop.controlador;
 import com.techshop.modelo.Producto;
 import com.techshop.servicio.ProductoService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -34,6 +35,7 @@ public class ProductoController {
     @GetMapping
     @Operation(summary = "Listar productos, opcionalmente filtrados por categoria")
     public ResponseEntity<List<Producto>> listar(
+            @Parameter(description = "Nombre de la categoria para filtrar (ej: Laptops, Smartphones)")
             @RequestParam(required = false) String categoria) {
         if (categoria != null && !categoria.isBlank()) {
             return ResponseEntity.ok(productoService.buscarPorCategoria(categoria));
