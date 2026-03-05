@@ -26,9 +26,18 @@ public class ProductoController {
         this.productoService = productoService;
     }
 
+    /**
+     * Lista todos los productos o filtra por categoria si se proporciona el query param.
+     * GET /api/productos          → todos (RF001)
+     * GET /api/productos?categoria=Laptops → filtrados (RF002)
+     */
     @GetMapping
-    @Operation(summary = "Listar todos los productos")
-    public ResponseEntity<List<Producto>> listarTodos() {
+    @Operation(summary = "Listar productos, opcionalmente filtrados por categoria")
+    public ResponseEntity<List<Producto>> listar(
+            @RequestParam(required = false) String categoria) {
+        if (categoria != null && !categoria.isBlank()) {
+            return ResponseEntity.ok(productoService.buscarPorCategoria(categoria));
+        }
         return ResponseEntity.ok(productoService.listarTodos());
     }
 
@@ -38,12 +47,6 @@ public class ProductoController {
         return productoService.buscarPorId(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
-    }
-
-    @GetMapping("/categoria/{categoria}")
-    @Operation(summary = "Filtrar productos por categoria")
-    public ResponseEntity<List<Producto>> buscarPorCategoria(@PathVariable String categoria) {
-        return ResponseEntity.ok(productoService.buscarPorCategoria(categoria));
     }
 
     @PostMapping

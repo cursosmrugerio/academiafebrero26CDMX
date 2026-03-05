@@ -46,7 +46,7 @@ class ProductoControllerTest {
     }
 
     @Test
-    void listarTodos_devuelve200() throws Exception {
+    void listar_sinFiltro_devuelveTodosConDatos() throws Exception {
         when(productoService.listarTodos()).thenReturn(List.of(producto));
 
         mockMvc.perform(get("/api/productos"))
@@ -74,13 +74,24 @@ class ProductoControllerTest {
     }
 
     @Test
-    void buscarPorCategoria_devuelve200() throws Exception {
+    void listar_conQueryParamCategoria_filtra() throws Exception {
         when(productoService.buscarPorCategoria("Laptops")).thenReturn(List.of(producto));
 
-        mockMvc.perform(get("/api/productos/categoria/Laptops"))
+        mockMvc.perform(get("/api/productos").param("categoria", "Laptops"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].categoria", is("Laptops")));
+    }
+
+    @Test
+    void listar_sinQueryParam_devuelveTodos() throws Exception {
+        when(productoService.listarTodos()).thenReturn(List.of(producto));
+
+        mockMvc.perform(get("/api/productos"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)));
+        verify(productoService).listarTodos();
+        verify(productoService, never()).buscarPorCategoria(any());
     }
 
     @Test
