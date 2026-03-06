@@ -182,6 +182,8 @@ Cantidad de trabajo completado en un sprint, medido en **historias terminadas**
 (o story points si se usan). Sirve para predecir cuanto trabajo cabe en sprints futuros.
 
 Sprint 1: 5 historias completadas (TECH-4 a TECH-8).
+Sprint 2: 5 historias completadas (TECH-9 a TECH-13).
+Sprint 3: 4 historias completadas (TECH-14 a TECH-17).
 
 ### Cierre del Sprint
 
@@ -311,4 +313,5 @@ aprender (Retrospective) y planificar (Planning) antes de volver a construir.
 | 2026-03-05 | Incremento | Decidimos Dockerizar la app para entregas incrementales por sprint |
 | 2026-03-05 | Sprint Review, Retrospectiva, Velocity, Cierre del Sprint | Al completar Sprint 1 |
 | 2026-03-06 | Transicion entre Sprints, Refinamiento, Sprint Planning, Sprint Goal | Antes de iniciar Sprint 2 |
+| 2026-03-06 | Proyecto completado: 3 sprints, 14 historias, 127 tests, JaCoCo >= 80% | Sprint 3 completado |
 
