@@ -194,6 +194,100 @@ Pasos al terminar un sprint:
 5. Tag de version en Git (ej: `v1.0.0`)
 6. Cerrar el sprint en Jira (las historias incompletas se mueven al siguiente)
 
+### Transicion entre Sprints: del cierre al inicio
+
+Cuando terminas un sprint y arrancas el siguiente, hay una secuencia de ceremonias
+y artefactos que se ejecutan. No es simplemente "terminar uno y empezar otro" — hay
+un proceso definido que asegura que el equipo aprenda del pasado y planifique bien
+el futuro.
+
+#### Ceremonias de cierre (Sprint que termina)
+
+Ya las conocemos, se ejecutan en este orden:
+
+1. **Sprint Review** — Demo en vivo del incremento al Product Owner/evaluador
+2. **Sprint Retrospective** — Reflexion interna del equipo (que salio bien, mal, mejorar)
+
+#### Ceremonias de inicio (Sprint que comienza)
+
+**1. Backlog Refinement (Refinamiento del Backlog)**
+
+Antes de planificar el nuevo sprint, el equipo revisa las historias candidatas del
+Product Backlog para asegurarse de que estan listas:
+
+- Las historias tienen descripcion clara y criterios de aceptacion?
+- Son lo suficientemente pequenas para completarse en un sprint?
+- Hay dependencias tecnicas que resolver primero?
+
+En TechShop, antes de iniciar el Sprint 2 revisamos:
+- TECH-9 a TECH-13 — estan bien definidas? tienen criterios claros?
+- El Sprint 1 dejo algo pendiente que impacte al Sprint 2?
+
+> En equipos grandes esto se hace en una sesion separada. En equipos pequenos
+> (como el nuestro) se hace como parte de la planificacion.
+
+**2. Sprint Planning (Planificacion del Sprint)**
+
+La ceremonia mas importante del inicio. El equipo decide **que** va a construir
+y **como** lo va a hacer. Tiene dos partes:
+
+| Parte | Pregunta | Resultado |
+|-------|----------|-----------|
+| Parte 1 | **Que** vamos a entregar? | Sprint Goal + historias seleccionadas |
+| Parte 2 | **Como** lo vamos a hacer? | Tareas tecnicas, dependencias, orden de trabajo |
+
+**Parte 1 — Que:** Se seleccionan historias del Product Backlog y se establece
+el **Sprint Goal** (objetivo del sprint).
+
+**Parte 2 — Como:** Para cada historia se identifican las tareas tecnicas,
+dependencias entre historias, y el orden optimo de desarrollo.
+
+#### Artefactos que se producen
+
+| Artefacto | Descripcion | Ejemplo Sprint 2 |
+|-----------|-------------|-------------------|
+| **Sprint Goal** | Objetivo en una frase que da direccion al sprint | "Implementar el flujo completo de compra" |
+| **Sprint Backlog** | Historias seleccionadas para el sprint | TECH-9, TECH-10, TECH-11, TECH-12, TECH-13 |
+| **Definition of Done** | Se revisa y ajusta si es necesario | Agregar nuevos criterios si aprendimos algo |
+
+#### Flujo completo de la transicion
+
+```
+Sprint N terminado
+    |
+    v
+[Sprint Review]        --> Demo del incremento
+    |
+    v
+[Sprint Retrospective] --> Que mejorar para el siguiente
+    |
+    v
+[Backlog Refinement]   --> Revisar historias candidatas
+    |
+    v
+[Sprint Planning]      --> Seleccionar historias + definir Sprint Goal
+    |
+    v
+Sprint N+1 inicia
+    |
+    v
+[Desarrollo diario]    --> Tomar historia, implementar, mover a "Listo"
+```
+
+#### En Jira, los pasos concretos son:
+
+1. **Cerrar Sprint N** — las historias incompletas se mueven automaticamente al backlog
+2. **Mover Epic del Sprint N a "Finalizada"** (si todas sus historias estan listas)
+3. **Iniciar Sprint N+1** — activar el sprint desde el board
+4. **Mover las historias del Sprint N+1 a "En progreso"** conforme se van trabajando
+
+#### Por que importa esta transicion?
+
+Sin estas ceremonias, el equipo cae en el error de "sprint infinito" — donde un
+sprint se funde con el siguiente sin detenerse a reflexionar ni planificar.
+La pausa entre sprints es corta pero critica: te obliga a entregar (Review),
+aprender (Retrospective) y planificar (Planning) antes de volver a construir.
+
 ---
 
 ## Flujo de trabajo que seguimos
@@ -216,4 +310,5 @@ Pasos al terminar un sprint:
 | 2026-03-05 | Definition of Done (DoD) | Decidimos estrategia de testing desde Sprint 1 |
 | 2026-03-05 | Incremento | Decidimos Dockerizar la app para entregas incrementales por sprint |
 | 2026-03-05 | Sprint Review, Retrospectiva, Velocity, Cierre del Sprint | Al completar Sprint 1 |
+| 2026-03-06 | Transicion entre Sprints, Refinamiento, Sprint Planning, Sprint Goal | Antes de iniciar Sprint 2 |
 
