@@ -18,8 +18,10 @@ public class SwaggerConfig {
         return new OpenAPI()
                 .info(new Info()
                         .title("TechShop Ecommerce API")
-                        .description("API REST para tienda de electronica - Proyecto final academia BBVA")
-                        .version("1.0.0")
+                        .description("API REST para tienda de electronica - Proyecto final academia BBVA. "
+                                + "Sprint 1: Catalogo (categorias, productos). "
+                                + "Sprint 2: Compra (usuarios, carrito, ordenes).")
+                        .version("2.0.0")
                         .contact(new Contact()
                                 .name("Miguel Rugerio")
                                 .email("miguel.rugerio@outlook.com")));
