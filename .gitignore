@@ -33,5 +33,8 @@
 # Archivos generados por Spring Batch
 reporte-empleados.csv
 
+# Git worktrees (desarrollo paralelo)
+worktrees/
+
 # Claude Code
 CLAUDE.md
