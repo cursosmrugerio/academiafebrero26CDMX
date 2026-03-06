@@ -90,7 +90,7 @@ mostrar Swagger completo → mostrar reporte de JaCoCo con coverage global >= 80
 ### Tecnologias demostradas
 Spring Batch, JUnit 5, Mockito, Swagger completo, JaCoCo
 
-### Estado: PENDIENTE
+### Estado: COMPLETADO
 
 ---
 

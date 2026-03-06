@@ -117,10 +117,10 @@ Fecha de inicio: 2026-03-04
 
 - [x] Docker Compose + scripts de inicializacion de BD
 - [x] Estructura inicial del proyecto (Maven, dependencias)
-- [ ] Entidades y repositorios
-- [ ] Servicios
-- [ ] Controladores REST
-- [ ] Spring Batch - job de carga de productos
-- [ ] Tests unitarios
-- [ ] Configuracion Swagger
-- [ ] Pruebas de integracion
+- [x] Entidades y repositorios
+- [x] Servicios
+- [x] Controladores REST
+- [x] Spring Batch - job de carga de productos
+- [x] Tests unitarios (127 tests, coverage >= 80%)
+- [x] Configuracion Swagger (v3.0.0 completa)
+- [x] Pruebas de integracion
