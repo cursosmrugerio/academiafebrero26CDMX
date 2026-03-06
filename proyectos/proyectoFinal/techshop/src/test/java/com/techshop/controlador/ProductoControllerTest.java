@@ -162,4 +162,99 @@ class ProductoControllerTest {
         mockMvc.perform(delete("/api/productos/xyz"))
                 .andExpect(status().isBadRequest());
     }
+
+    // --- Casos edge adicionales ---
+
+    @Test
+    void listar_conCategoriaVacia_devuelveTodos() throws Exception {
+        // Cubre la rama donde categoria no es null pero si esta vacia (isBlank)
+        when(productoService.listarTodos()).thenReturn(List.of(producto));
+
+        mockMvc.perform(get("/api/productos").param("categoria", "  "))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)));
+        verify(productoService).listarTodos();
+        verify(productoService, never()).buscarPorCategoria(any());
+    }
+
+    @Test
+    void actualizar_noExistente_devuelve400() throws Exception {
+        when(productoService.actualizar(eq("xyz"), any(Producto.class)))
+                .thenThrow(new IllegalArgumentException("Producto no encontrado con id: xyz"));
+
+        mockMvc.perform(put("/api/productos/xyz")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(producto)))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string(containsString("Producto no encontrado")));
+    }
+
+    @Test
+    void actualizar_categoriaInexistente_devuelve400() throws Exception {
+        when(productoService.actualizar(eq("prod1"), any(Producto.class)))
+                .thenThrow(new IllegalArgumentException("La categoria no existe: Relojes"));
+
+        Producto conCatInvalida = new Producto("MacBook", "Desc", new BigDecimal("5000"),
+                3, null, "Relojes", null);
+
+        mockMvc.perform(put("/api/productos/prod1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(conCatInvalida)))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string(containsString("La categoria no existe")));
+    }
+
+    @Test
+    void crear_sinPrecio_devuelve400() throws Exception {
+        // Producto sin precio (campo @NotNull)
+        Producto sinPrecio = new Producto("Test", "Desc", null,
+                5, null, "Laptops", null);
+
+        mockMvc.perform(post("/api/productos")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(sinPrecio)))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void crear_sinStock_devuelve400() throws Exception {
+        // Producto sin stock (campo @NotNull)
+        Producto sinStock = new Producto("Test", "Desc", new BigDecimal("100"),
+                null, null, "Laptops", null);
+
+        mockMvc.perform(post("/api/productos")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(sinStock)))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void crear_sinCategoria_devuelve400() throws Exception {
+        // Producto sin categoria (campo @NotBlank)
+        Producto sinCategoria = new Producto("Test", "Desc", new BigDecimal("100"),
+                5, null, "", null);
+
+        mockMvc.perform(post("/api/productos")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(sinCategoria)))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void listar_sinResultados_devuelve200ConListaVacia() throws Exception {
+        when(productoService.listarTodos()).thenReturn(List.of());
+
+        mockMvc.perform(get("/api/productos"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(0)));
+    }
+
+    @Test
+    void listar_porCategoriaInexistente_devuelve200ConListaVacia() throws Exception {
+        when(productoService.buscarPorCategoria("Inexistente")).thenReturn(List.of());
+
+        mockMvc.perform(get("/api/productos").param("categoria", "Inexistente"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(0)));
+    }
 }

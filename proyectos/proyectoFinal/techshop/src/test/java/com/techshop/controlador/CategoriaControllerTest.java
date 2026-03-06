@@ -148,4 +148,55 @@ class CategoriaControllerTest {
         mockMvc.perform(delete("/api/categorias/xyz"))
                 .andExpect(status().isBadRequest());
     }
+
+    // --- Casos edge adicionales ---
+
+    @Test
+    void listarTodas_listaVacia_devuelve200() throws Exception {
+        when(categoriaService.listarTodas()).thenReturn(List.of());
+
+        mockMvc.perform(get("/api/categorias"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(0)));
+    }
+
+    @Test
+    void actualizar_conNombreVacio_devuelve400() throws Exception {
+        // @Valid debe rechazar nombre vacio (@NotBlank)
+        Categoria sinNombre = new Categoria("", "Descripcion", List.of());
+
+        mockMvc.perform(put("/api/categorias/abc123")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(sinNombre)))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void eliminar_existente_verificaNoContent() throws Exception {
+        doNothing().when(categoriaService).eliminar("abc123");
+
+        mockMvc.perform(delete("/api/categorias/abc123"))
+                .andExpect(status().isNoContent())
+                .andExpect(content().string(""));
+        verify(categoriaService).eliminar("abc123");
+    }
+
+    @Test
+    void buscarPorId_verificaAtributos() throws Exception {
+        when(categoriaService.buscarPorId("abc123")).thenReturn(Optional.of(categoria));
+
+        mockMvc.perform(get("/api/categorias/abc123"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", is("abc123")))
+                .andExpect(jsonPath("$.atributos", hasSize(2)))
+                .andExpect(jsonPath("$.atributos[0]", is("ram")));
+    }
+
+    @Test
+    void crear_sinBody_devuelve400() throws Exception {
+        mockMvc.perform(post("/api/categorias")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isBadRequest());
+    }
 }
