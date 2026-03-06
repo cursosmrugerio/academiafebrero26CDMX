@@ -20,8 +20,9 @@ public class SwaggerConfig {
                         .title("TechShop Ecommerce API")
                         .description("API REST para tienda de electronica - Proyecto final academia BBVA. "
                                 + "Sprint 1: Catalogo (categorias, productos). "
-                                + "Sprint 2: Compra (usuarios, carrito, ordenes).")
-                        .version("2.0.0")
+                                + "Sprint 2: Compra (usuarios, carrito, ordenes). "
+                                + "Sprint 3: Carga masiva con Spring Batch, testing y calidad.")
+                        .version("3.0.0")
                         .contact(new Contact()
                                 .name("Miguel Rugerio")
                                 .email("miguel.rugerio@outlook.com")));

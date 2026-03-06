@@ -3,6 +3,7 @@ package com.techshop.controlador;
 import com.techshop.modelo.CarritoItem;
 import com.techshop.servicio.CarritoService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,16 +30,17 @@ public class CarritoController {
     @PostMapping
     @Operation(summary = "Agregar un producto al carrito")
     public ResponseEntity<CarritoItem> agregar(
-            @RequestParam Long usuarioId,
-            @RequestParam String productoId,
-            @RequestParam(defaultValue = "1") int cantidad) {
+            @Parameter(description = "ID del usuario dueno del carrito") @RequestParam Long usuarioId,
+            @Parameter(description = "ID del producto en MongoDB") @RequestParam String productoId,
+            @Parameter(description = "Cantidad a agregar (default: 1)") @RequestParam(defaultValue = "1") int cantidad) {
         CarritoItem item = carritoService.agregarItem(usuarioId, productoId, cantidad);
         return ResponseEntity.status(HttpStatus.CREATED).body(item);
     }
 
     @GetMapping
     @Operation(summary = "Ver el carrito de un usuario")
-    public ResponseEntity<List<CarritoItem>> verCarrito(@RequestParam Long usuarioId) {
+    public ResponseEntity<List<CarritoItem>> verCarrito(
+            @Parameter(description = "ID del usuario para consultar su carrito") @RequestParam Long usuarioId) {
         return ResponseEntity.ok(carritoService.obtenerCarrito(usuarioId));
     }
 

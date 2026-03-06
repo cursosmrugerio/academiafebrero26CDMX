@@ -3,6 +3,7 @@ package com.techshop.controlador;
 import com.techshop.modelo.Orden;
 import com.techshop.servicio.OrdenService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +28,8 @@ public class OrdenController {
 
     @PostMapping
     @Operation(summary = "Crear una orden desde el carrito del usuario")
-    public ResponseEntity<Orden> crearOrden(@RequestParam Long usuarioId) {
+    public ResponseEntity<Orden> crearOrden(
+            @Parameter(description = "ID del usuario cuyo carrito se convierte en orden") @RequestParam Long usuarioId) {
         Orden orden = ordenService.crearOrden(usuarioId);
         return ResponseEntity.status(HttpStatus.CREATED).body(orden);
     }
@@ -41,7 +43,8 @@ public class OrdenController {
 
     @GetMapping
     @Operation(summary = "Listar ordenes de un usuario")
-    public ResponseEntity<List<Orden>> listarPorUsuario(@RequestParam Long usuarioId) {
+    public ResponseEntity<List<Orden>> listarPorUsuario(
+            @Parameter(description = "ID del usuario para consultar sus ordenes") @RequestParam Long usuarioId) {
         return ResponseEntity.ok(ordenService.listarPorUsuario(usuarioId));
     }
 
