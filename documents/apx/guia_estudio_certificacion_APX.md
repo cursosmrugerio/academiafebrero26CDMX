@@ -1,5 +1,64 @@
 # Guia de Estudio para Certificacion APX - BBVA
 
+> **Ultima revision: marzo 2026**
+
+---
+
+## Vigencia de los materiales de estudio
+
+### Los materiales de 2019-2021 siguen siendo validos
+
+Despues de una investigacion exhaustiva comparando materiales de 2019-2021 con los recursos mas recientes (incluyendo un test de Daypo creado el **20 de marzo de 2025**), la conclusion es clara: **APX NO ha sufrido cambios arquitectonicos drasticos**. El examen de certificacion cubre esencialmente los mismos temas.
+
+### Comparativa del stack tecnologico (2019 vs 2026)
+
+| Componente | ~2019 (materiales originales) | 2025-2026 (evidencia actual) | Cambio? |
+|-----------|-------------------------------|------------------------------|---------|
+| Java | Java 8 | Java 8 / Java 11+ (migracion gradual) | Menor |
+| Contenedor OSGi | Apache Felix | Apache Felix (sigue referenciado) | Sin cambio |
+| Build | Maven | Maven | Sin cambio |
+| IDE | Eclipse | Eclipse | Sin cambio |
+| Batch | Spring Batch | Spring Batch | Sin cambio |
+| Conectores | JDBC, IMS, API, SOAP | JDBC, IMS, API, SOAP, **Kafka** | Kafka agregado |
+| Monitoreo | Atenea, Kibana, Felix | Atenea, Kibana, Felix | Sin cambio |
+| CI/CD | Jenkins + Bitbucket/Git | Jenkins + **GitLab** (evolucion menor) | Menor |
+| Calidad | SonarQube, 75-80% cobertura | SonarQube, 75-80% cobertura | Sin cambio |
+| Scheduler | Control-M | Control-M | Sin cambio |
+| Infraestructura | Red Hat OpenShift/OpenStack | Red Hat OpenShift/OpenStack | Sin cambio |
+
+### Que SI cambio (incremental, no disruptivo)
+
+1. **Kafka Connector**: se agrego publicacion/suscripcion de eventos (no existia en materiales pre-2020)
+2. **Java 11+**: algunas guias recientes mencionan Java 11, pero Java 8 sigue siendo referencia en el examen
+3. **GitLab**: aparece junto a Bitbucket en referencias recientes
+4. **Spring Boot**: vacantes recientes (2025-2026) mencionan explicitamente Spring Boot junto con ASO/APX
+5. **BBVA ONE** (~2024): proyecto de unificacion de cultura de desarrollo (15,000+ devs), pero es cambio de proceso, no de arquitectura
+
+### Que NO cambio (el grueso del examen)
+
+- Arquitectura de 3 capas (Control, Negocio, Datos)
+- Componentes Online (Transaction, Library, DTO)
+- Pipeline de despliegue: Desarrollo → Integrado → AUS → Octa → Produccion
+- Ventanas de despliegue (05:30, 06:30, 15:30, 19:30 UTC)
+- Modelo de branching (Feature, Release, Hotfix)
+- Manejo de errores (`addAdvice()`, `setSeverity()`)
+- Monitoreo (Atenea, Kibana, Felix)
+- Governance y nomenclatura UUAA
+- Regla de 3 niveles de profundidad
+- Prohibicion de invocacion sincrona entre transacciones
+
+### Evidencia del test mas reciente (marzo 2025, Daypo)
+
+El test "Compartido APX" creado el 20/03/2025 (47 preguntas) cubre exactamente los mismos temas que los materiales de 2021: gestion de errores, rollback en consola Ether, integracion ASO con APX, modelo de ramas Git, ventanas de despliegue, librerias de infraestructura, Apache Maven, jobs Cronos, zonas de transacciones. **No incluye** Kafka, contenedores, cloud moderno ni microservicios cloud-native.
+
+### Recomendacion
+
+Estudia con confianza usando todos los materiales listados en este documento. Complementa con:
+- Conocimiento basico del **Kafka Connector** (tema que podria aparecer en versiones recientes)
+- Familiaridad con **Java 11** (por si preguntan sobre version minima actualizada)
+
+---
+
 ## Que es APX
 
 **APX (Arquitectura Plataforma Extendida)** es una plataforma interna y propietaria de BBVA para el desarrollo de aplicaciones backend transaccionales basadas en Java. Se divide en dos modos operativos:
@@ -191,13 +250,13 @@ Basado en tests de Daypo y flashcards de Quizlet:
 
 ### Examenes de practica (Daypo) — GRATIS, sin registro
 
-| Recurso | URL |
-|---------|-----|
-| Examen Certificacion APX 1 | https://www.daypo.com/examen-certificacion-apx-1.html |
-| Examen Certificacion APX 2 | https://www.daypo.com/examen-certificacion-apx-2.html |
-| Test APX (74 preguntas con respuestas) | https://www.daypo.com/880084.html |
-| Test APX adicional | https://www.daypo.com/188740.html |
-| Test Compartido APX | https://www.daypo.com/compartido-apx.html |
+| Recurso | Fecha creacion | Preguntas | URL |
+|---------|---------------|-----------|-----|
+| Examen Certificacion APX 1 | 2022/04/06 | 34 | https://www.daypo.com/examen-certificacion-apx-1.html |
+| Examen Certificacion APX 2 | 2022/04/06 | 34 | https://www.daypo.com/examen-certificacion-apx-2.html |
+| Test APX (con respuestas) | 2021/10/26 | 74 | https://www.daypo.com/880084.html |
+| Test APX adicional | - | - | https://www.daypo.com/188740.html |
+| **Test Compartido APX (mas reciente)** | **2025/03/20** | **47** | https://www.daypo.com/compartido-apx.html |
 
 ### Flashcards (Quizlet) — GRATIS
 
