@@ -186,7 +186,8 @@ Stream.concat(s1, s2).parallel().distinct().forEach(element -> System.out.print(
 
 **What is the result?**
 
-- A) `ABCDE` // the order of elements is unpredictable- B) `ADEABCB` // the order of elements is unpredictable
+- A) `ABCDE` // the order of elements is unpredictable
+- B) `ADEABCB` // the order of elements is unpredictable
 - C) `ABCDE`
 - D) `ABBCDE` // the order of elements is unpredictable
 
@@ -212,7 +213,8 @@ public class Test {
 - A) `{bicycle=7, car=7, motorcycle=7, truck=7}`
 - B) `{3:bicycle, 0:car, 6:motorcycle, 5:truck}`
 - C) Compilation fails.
-- D) `{bicycle=1, car=3, motorcycle=1, truck=2}`- E) `{bicycle, car, motorcycle, truck}`
+- D) `{bicycle=1, car=3, motorcycle=1, truck=2}`
+- E) `{bicycle, car, motorcycle, truck}`
 
 ---
 
@@ -242,7 +244,8 @@ public class Test {
 - A) Compilation fails.
 - B) TableChair TableChair
 - C) A `RuntimeException` is thrown.
-- D) wTablewChair TableChair- E) wTableChair TableChair
+- D) wTablewChair TableChair
+- E) wTableChair TableChair
 
 ---
 
@@ -264,7 +267,7 @@ System.out.println(p1.name);
 - B) Dog / Dog
 - C) Cat / Dog
 - D) Cat / null
-- E) Cat / Cat
+- E) Cat / Cat *
 ---
 
 ### Pregunta 11 (Page 11 of 50)
@@ -287,7 +290,8 @@ public class App{
 
 **Which statement is true while the program prints `GC`?**
 
-- A) Only one of the objects previously referenced by `t1` is eligible for garbage collection.- B) Only the object referenced by `t2` is eligible for garbage collection.
+- A) Only one of the objects previously referenced by `t1` is eligible for garbage collection.
+- B) Only the object referenced by `t2` is eligible for garbage collection.
 - C) Both the objects previously referenced by `t1` are eligible for garbage collection.
 - D) None of the objects are eligible for garbage collection.
 
@@ -343,9 +347,10 @@ public class App {
 
 **Which action enables the code to compile?**
 
-- A) Make the `regNo` variable `static`.- B) Replace `record` with `void`.
+- A) Make the `regNo` variable `static`.
+- B) Replace `record` with `void`. 
 - C) Make the `regNo` variable `public`.
-- D) Replace `record` with `class`.
+- D) Replace `record` with `class`. 
 - E) Remove the `regNo` initialization statement.
 
 ---
@@ -356,7 +361,7 @@ public class App {
 1. class Item {
 2.     String name;
 3.     public static void display() {
-4.         name = "Vase";
+4.         name = "Vase"; //Don't Compile
 5.         System.out.println(name);
 6.     }
 7.     public void display(String design) {
@@ -375,7 +380,7 @@ public class App {
 **Which action enables the code to compile?**
 
 - A) Replace 7 with `public static void display(String design) {`
-- B) Replace 2 with `static String name;`
+- B) Replace 2 with `static String name;` 
 - C) Replace 3 with `private static void display() {`
 - D) Replace 15 with `Item.display("Flower");`
 
@@ -425,12 +430,12 @@ System.out.println(res);
 
 **Which two statements at `Line n1` independently enable you to print `1250`?**
 
-- A) `Integer res = 250 + Integer(s2);`
-- B) `Integer res = 250;` / `res += s2;`
-- C) `Integer res = 250 + s;`
+- A) `Integer res = 250 + Integer(s2);` 
+- B) `Integer res = 250;` / `res += s2;` 
+- C) `Integer res = 250 + s;` 
 - D) `Integer res = 250 + Integer.valueOf(s);`
-- E) `Integer res = 250 + Integer.parseInt(s);`
-- F) `Integer res = 250 + s2;`
+- E) `Integer res = 250 + Integer.parseInt(s);` 
+- F) `Integer res = 250 + s2;` 
 
 ---
 
@@ -438,8 +443,8 @@ System.out.println(res);
 **Given the code fragment:**
 ```java
 int a = 2;
-int b = ~a;
-int c = a^b;
+int b = ~a; -3
+int c = a^b; -1
 boolean d = a < b & a > c++;
 System.out.println(d + " " + c);
 boolean e = a > b && a > c++;
@@ -451,7 +456,7 @@ System.out.println(e + " " + c);
 - A) false 1 / true 2
 - B) true 1 / false 2
 - C) false 1 / false 2
-- D) false 0 / true 1
+- D) false 0 / true 1 *
 ---
 
 ### Pregunta 18 (Page 18 of 50)
@@ -484,7 +489,7 @@ public class Test {
 **Which statement is true?**
 
 - A) The program throws `StockException`.
-- B) The program throws `OutofStockException`.
+- B) The program throws `OutofStockException`. 
 - C) The program throws `ClassCastException`.
 - D) The program fails to compile.
 
@@ -511,7 +516,7 @@ public class Test {
 
 **Which two modifications enable the code to print `Open Close`?**
 
-- A) At line n2, insert: `public void close() throws IOException { System.out.print("Close "); }`
+- A) At line n2, insert: `public void close() throws IOException { System.out.print("Close "); }` 
 - B) At line n2, insert: `final void close() { System.out.print("Close "); }`
 - C) Replace line n1 with: `class Folder extends Closeable {`
 - D) Replace line n1 with: `class Folder implements AutoCloseable {`
@@ -545,7 +550,7 @@ public class App {
 - A) mA
 - B) mB
 - C) mB / mA
-- D) mB / mC
+- D) mB / mC *
 
 ---
 
@@ -750,7 +755,8 @@ public class Weather {
 **What is the result?**
 
 - A) Compilation fails
-- B) 0 SNOWY- C) 1 SNOWY
+- B) 0 SNOWY
+- C) 1 SNOWY
 - D) 0 CLOUDY
 - E) 1 RAINY
 
@@ -759,7 +765,7 @@ public class Weather {
 ### Pregunta 28 (Page 28 of 50)
 **Given the code fragment:**
 ```java
-List<Integer> listOfNumbers = List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+List<Integer> listOfNumbers = List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10); 
 ```
 
 **Which code fragment returns different values?**
@@ -821,6 +827,11 @@ public static void main(String[] args) {
 - D) A thread in waiting state must handle `InterruptedException`.
 
 ---
+
+
+
+
+
 
 ### Pregunta 31 (Page 31 of 50)
 **Given the code fragment:**
